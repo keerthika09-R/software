@@ -1,3 +1,4 @@
+
 ------Total.com-----
 
 package runner;
@@ -461,3 +462,65 @@ public class TestSample extends Base{
 }
 
 -------------------------------------------------------------------------------------------------------------------------------------------------
+
+--zenDesk---
+
+package runner;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+
+import org.openqa.selenium.By;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import com.aventstack.extentreports.ExtentReports;
+
+import utils.Base;
+import utils.LoggerHandler;
+import utils.Screenshot;
+import utils.Reporter;
+
+
+public class TestSample extends Base {
+    ExtentReports reports;
+    Reporter reporter;
+    
+    @BeforeMethod
+    public void launchBrowser() throws MalformedURLException {
+        // launch your browser
+        reports=reporter.generateExtentReport("Reports");
+
+    driver=openBrowser();
+
+            }
+
+    @Test
+    public void testOne() throws InterruptedException, IOException {
+        // write or call ur pages here
+        Thread.sleep(8000);
+       // driver.findElement(By.xpath("//button[@id='onetrust-accept-btn-handler']")).click();
+        Thread.sleep(5000);
+        driver.findElement(By.xpath("//div[@class='FormFieldstyle__FormFieldWrapper-sc-1xgjwzo-7 cSYlgS']//input")).sendKeys("FirstName");
+
+        Thread.sleep(5000);
+        driver.findElement(By.xpath("//input[@name='LastName']")).sendKeys("LastName");
+        Thread.sleep(5000);
+        Screenshot.getScreenShot(driver, "screenshot");
+        driver.findElement(By.xpath("//input[@name='owner.email']")).sendKeys("Work001@email.com");
+        Thread.sleep(10000);
+        driver.findElement(By.xpath("//div[@class='StyledTextInput-sc-k12n8x-0 StyledTextFauxInput-sc-yqw7j9-0 StyledSelectWrapper-sc-i7b6hw-0 hEMlJB kNtOoI ejWlNx']")).click();
+        Thread.sleep(8000);
+        LoggerHandler.logInfo("TestCase passed");
+
+    }
+
+    @AfterMethod
+    public void tearDown() {
+        // quit the driver here
+        driver.quit();
+    }
+}
+
+-----------------------------------------------------------------------------------------------------------------
