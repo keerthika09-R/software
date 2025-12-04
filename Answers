@@ -1,0 +1,463 @@
+------Total.com-----
+
+package runner;
+
+import java.io.File;
+import java.net.MalformedURLException;
+import java.time.Duration;
+
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.devtools.idealized.Javascript;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import com.aventstack.extentreports.reporter.configuration.Theme;
+
+import utils.Base;
+import utils.ExcelReader;
+import utils.LoggerHandler;
+import utils.Reporter;
+import utils.Screenshot;
+import utils.WebDriverHelper;
+
+public class TestRunner extends Base {
+    ExtentReports reports;
+    ExtentSparkReporter spark;
+    WebDriverHelper helper;
+    @BeforeClass
+    public void getReports(){
+
+        reports = new ExtentReports();
+        spark = new ExtentSparkReporter("reports/myReport.html");
+        spark.config().setTheme(Theme.DARK);
+        spark.config().setDocumentTitle("Orange HRM report");
+
+        if(reports != null) {
+            reports.attachReporter(spark);
+        }
+
+   
+    }
+    @BeforeMethod
+    public void launchBrowser() throws MalformedURLException {
+        openBrowser();
+        new WebDriverHelper(driver);
+    }
+
+    @Test
+    public void testOne() {
+        try
+        {
+            Thread.sleep(5000);
+            driver.findElement(By.xpath("//div[@class='_1WRJuyTt _3dVVljYP _2FR6nyQk']")).click();
+            Thread.sleep(3000);
+            driver.findElement(By.xpath("//div[@class='_26cjR6gi']")).click();
+            LoggerHandler.logInfo("clicked succesfully");
+
+                String username=ExcelReader.readdata("testdata/data.xlsx","Sheet1",0,0);
+            driver.findElement(By.xpath("//input[@class='_3MuNYYSt']")).sendKeys(username);
+            driver.findElement(By.xpath("//input[@name='email']")).sendKeys("Email@email.com");
+            Thread.sleep(2000);
+            driver.findElement(By.xpath("//input[@name='password']")).sendKeys("password@007");
+            // WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(20));
+            // WebElement button = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//p[@class='_3Huk_4PK']/following-sibling::button")));
+            // JavascriptExecutor js = (JavascriptExecutor) driver;
+            // helper.waitForElementToBeVisible(By.xpath("//p[@class='_3Huk_4PK']/following-sibling::button"), 20);
+           // js.executeScript("arguments[0].scrollIntoView(true);",button);
+
+            Thread.sleep(20000);
+            driver.findElement(By.xpath("//button[@class='box-border border-0 border-solid font-family-inherit m-0 p-0 text-center inline-flex items-center justify-center rounded-md outline-none focus-visible:ring-4 focus-visible:ring-brand-blue/50 font-semibold disabled:pointer-events-none cursor-pointer disabled:cursor-default transition-colors text-white bg-brand-green disabled:bg-gray-300 hover:bg-brand-green-dark active:bg-brand-green-darker paragraph-md gap-6 py-[14px] px-[33px] md:px-[49px] _234usIAX']")).click();
+            //button.click();
+            
+            Screenshot.getScreenShot(driver, "screenshot");
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+     
+    @AfterMethod
+    public void tearDown() {
+        // quit the driver here
+        driver.quit();
+    }
+     @AfterClass
+    public void flushReport() {
+        if (reports != null) {
+            reports.flush();
+        }
+    }
+}
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+------Codescandy---------
+
+package runner;
+
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.events.EventFiringDecorator;
+import org.openqa.selenium.support.events.WebDriverListener;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import utils.Base;
+import utils.EventHandler;
+import utils.Screenshot;
+import utils.WebDriverHelper;
+
+import java.net.URL;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.time.Duration;
+import java.util.Properties;
+import java.util.Set;
+
+
+public class TestPage  extends Base{
+    WebDriverHelper helper;
+    @BeforeMethod
+    public void helper() throws MalformedURLException
+    { 
+        driver=openBrowser();
+        helper=new WebDriverHelper(driver);
+    }
+
+    @Test
+    public void testRedbus() throws InterruptedException, IOException {
+    
+        Thread.sleep(3000);
+         By ele=By.xpath("//input[@name='email']");
+           helper.javascriptScroll(ele);
+           Thread.sleep(6000);
+           driver.findElement(By.xpath("//input[@name='email']")).click();
+           driver.findElement(By.xpath("//input[@name='email']")).sendKeys("admin@gmail.com");
+           Thread.sleep(3000);
+           driver.findElement(By.xpath("//button[@id='gumroad-follow-form-embed-button']")).click();
+           Thread.sleep(3000);
+           Screenshot.getScreenShot(driver, "screenshot");
+       
+
+         
+
+    
+    }
+    @AfterMethod
+    public void quitit()
+    {
+        driver.quit();
+    }
+}
+---------------------------------------------------------------------------------------------------------------
+----Tatacliq---
+package runner;
+
+import java.net.MalformedURLException;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import com.aventstack.extentreports.reporter.configuration.Theme;
+
+import utils.Base;
+import utils.LoggerHandler;
+import utils.Screenshot;
+
+public class TestRunner extends Base {
+public static Screenshot screenshot;
+
+ ExtentReports reports;
+    ExtentSparkReporter spark;
+    @BeforeClass
+    public void getReports(){
+        reports = new ExtentReports();
+        spark = new ExtentSparkReporter("reports/myReport.html");
+        spark.config().setTheme(Theme.DARK);
+        spark.config().setDocumentTitle("Orange HRM report");
+
+        if(reports != null) {
+            reports.attachReporter(spark);
+        }
+
+   
+    }
+    @BeforeMethod
+    public void launchBrowser() throws MalformedURLException {
+        // launch your browser
+        openBrowser();
+    }
+
+    @Test
+    public void testOne() throws InterruptedException {
+        // write or call ur pages here
+        try{
+        Thread.sleep(5000);
+        driver.findElement(By.xpath("//button[@id='moe-dontallow_button']")).click();
+        LoggerHandler.logInfo("element clicked");
+       driver.findElement(By.xpath("//a[text()='Contact Us']")).click();
+       WebElement ele=driver.findElement(By.xpath("//h2[contains(text(),'Contact')]"));
+       Assert.assertTrue(ele.getText().contains("Contact"));
+       driver.findElement(By.xpath("//div[@class='container']//a")).click();
+       Thread.sleep(3000);
+       Screenshot.getScreenShot(driver, "screenshot");
+    }
+    catch(Exception e)
+    {
+        e.printStackTrace();
+    }
+    
+}
+
+    @AfterMethod
+    public void tearDown() {
+        // quit the driver here
+        driver.quit();
+    }
+     @AfterClass
+    public void finalReports(){
+        if(reports != null) {
+            reports.flush();
+        }
+    }
+}
+-------------------------------------------------------------------------------------
+----BMW--------\
+package runner;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import com.aventstack.extentreports.ExtentReports;
+
+import utils.Base;
+import utils.LoggerHandler;
+import utils.Reporter;
+import utils.Screenshot;
+import utils.WebDriverHelper;
+
+public class TestRunner extends Base {
+     WebDriverHelper helper;
+     ExtentReports reports;
+     Reporter reporter;
+     @BeforeClass
+     public void generatereport()
+     {
+        reports=reporter.generateExtentReport("Report");
+     }
+    @BeforeMethod
+    public void launchBrowser() throws MalformedURLException {
+        openBrowser();
+        helper=new WebDriverHelper(driver);
+    }
+
+    @Test
+    public void testOne() throws InterruptedException, IOException {
+        // write or call ur pages here
+        Thread.sleep(5000);
+        By ele=By.xpath("//a[text()=' BMW ConnectedDrive Upgrades ']");
+        helper.javascriptScroll(ele);
+        Thread.sleep(5000);
+        driver.findElement(By.xpath("//a[text()=' BMW ConnectedDrive Upgrades ']")).click();
+        helper.switchToNewWindow();
+      By ele1=By.xpath("//ul[@class='tw-grid tw-auto-rows-[_auto_auto_auto_auto] tw-gap-x-6 tw-gap-y-0 tw-grid-cols-1 md:tw-grid-cols-2 m1:tw-grid-cols-3 lg:tw-grid-cols-4 xl:tw-grid-cols-6']//li[4]");
+      helper.hoverOverElement(ele1);
+      driver.findElement(By.xpath("//ul[@class='tw-grid tw-auto-rows-[_auto_auto_auto_auto] tw-gap-x-6 tw-gap-y-0 tw-grid-cols-1 md:tw-grid-cols-2 m1:tw-grid-cols-3 lg:tw-grid-cols-4 xl:tw-grid-cols-6']//li[4]")).click();
+      Thread.sleep(2000);
+      Screenshot.getScreenShot(driver, "screenshot");
+      LoggerHandler.logInfo("testcase done");
+
+
+
+        
+    }
+
+    @AfterMethod
+    public void tearDown() {
+        // quit the driver here
+        driver.quit();
+    }
+    @AfterClass
+    public void flushreport()
+    {
+        reports.flush();
+    }
+}
+-----------------------------------------------------------------------------------------------------------------------
+---Slack---
+package runner;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import com.aventstack.extentreports.ExtentReports;
+
+import utils.Base;
+import utils.ExcelReader;
+import utils.LoggerHandler;
+import utils.Reporter;
+import utils.Screenshot;
+
+public class TestSample extends Base {
+   Reporter reporter;
+   ExtentReports reports;
+    @BeforeMethod
+    public void launchBrowser() throws MalformedURLException {
+        // launch your browser
+        reports=reporter.generateExtentReport("Reports");
+        driver=openBrowser();
+    }
+
+    @Test
+    public void testOne() throws InterruptedException, IOException {
+        // write or call ur pages here
+        Thread.sleep(3000);
+        driver.findElement(By.xpath("//input[@id='first_name']")).sendKeys("FirstName");
+        String surname=ExcelReader.readdata("testdata/data.xlsx","Sheet1",0,0);
+        Thread.sleep(4000);
+        driver.findElement(By.xpath("//input[@id='last_name']")).sendKeys(surname);
+        Thread.sleep(3000);
+        driver.findElement(By.xpath("//input[@id='email']")).sendKeys("user002@email.com");
+        Thread.sleep(3000);
+        WebElement ele=driver.findElement(By.xpath("//select[@id='role_option']"));
+        Select ss=new Select(ele);
+        ss.selectByIndex(3);
+        Thread.sleep(3000);
+        WebElement elee=driver.findElement(By.xpath("//select[@id='country_option']"));
+        Select sc=new Select(elee);
+        sc.selectByIndex(0);
+        Thread.sleep(3000);
+        Screenshot.getScreenShot(driver, "screenshot");
+        LoggerHandler.logInfo("Testcase passed");
+    }
+
+    @AfterMethod
+    public void tearDown() {
+        // quit the driver here
+   driver.quit();
+    }
+}
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+----SalesForce---
+
+package runner;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+
+import org.openqa.selenium.By;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+
+import utils.Base;
+import utils.LoggerHandler;
+import utils.Screenshot;
+
+public class TestSample extends Base{
+    ExtentReports reports;
+    ExtentSparkReporter spark;
+    @BeforeClass
+    public void report()
+    {
+        reports=new ExtentReports();
+        spark=new ExtentSparkReporter("reports/myReport.html");
+        reports.attachReporter(spark);
+
+    }
+    
+
+    @BeforeMethod
+    public void launchBrowser() throws MalformedURLException {
+        driver=openBrowser();
+    }
+
+    @Test
+    public void testOne() throws InterruptedException, IOException {
+        // write or call ur pages here
+        Thread.sleep(3000);
+        driver.findElement(By.xpath("//input[@id='username']")).sendKeys("Email009@email.com");
+        Thread.sleep(3000);
+        driver.findElement(By.xpath("//input[@id='password']")).sendKeys("password@009");
+        Thread.sleep(3000);
+        driver.findElement(By.xpath("//label[text()='Remember me']")).click();
+        Thread.sleep(3000);
+        driver.findElement(By.xpath("//input[@id='Login']")).click();
+        Thread.sleep(3000);
+        driver.findElement(By.xpath("//a[@id='forgot_password_link']")).click();
+        Thread.sleep(3000);
+        Screenshot.getScreenShot(driver, "screenshot");
+        LoggerHandler.logInfo("Testcase passed");
+
+        
+        
+    }
+
+    @AfterMethod
+    public void tearDown() {
+        // quit the driver here
+        driver.quit();
+    }
+    @AfterClass
+    public void reportss()
+    {
+        reports.flush();
+    }
+}
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
